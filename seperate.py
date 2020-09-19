@@ -73,6 +73,6 @@ def email_extract(st):
     else:
         return ("")
 # df['hlink']+
-df['email'] = kf[kf['heading'].apply(email_extract).str.contains('@')]['heading'].apply(email_extract).apply(lambda x: x[7:])
+df['email'] = df[df['heading'].apply(email_extract).str.contains('@')]['heading'].apply(email_extract).apply(lambda x: x[7:].replace('mailto:',""))
 
 df.to_csv('final_data.csv', index=False) #writing data
