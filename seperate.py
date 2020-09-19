@@ -72,7 +72,17 @@ def email_extract(st):
         return ls
     else:
         return ("")
-# df['hlink']+
+
 df['email'] = df[df['heading'].apply(email_extract).str.contains('@')]['heading'].apply(email_extract).apply(lambda x: x[7:].replace('mailto:',""))
 
-df.to_csv('final_data.csv', index=False) #writing data
+
+# Getting separate files for each columns
+def writer(col_name):
+    series = df.loc[df[col_name].notna(),col_name].tolist()
+    with open(col_name, "w") as output:
+        for i in range(len(series)):
+            output.write(series[i]+"\n")
+
+name_list = df.columns.tolist()
+for i in range(2,7):
+    writer(name_list[i])
