@@ -1,5 +1,6 @@
 import pandas as pd  
 import numpy as np
+import re
 
 df = pd.read_csv("./new.csv")
 
@@ -66,14 +67,14 @@ def email_extract(st):
     li = st.split(',')
 
         
-    ls = [match for match in li if "@" in match]
+    ls = re.findall("([a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+)", st)
     if len(ls):
         ls = ls[0]
         return ls
     else:
         return ("")
 
-df['email'] = df[df['heading'].apply(email_extract).str.contains('@')]['heading'].apply(email_extract).apply(lambda x: x[7:].replace('mailto:',""))
+df['email'] = df[df['heading'].apply(email_extract).str.contains('@')]['heading'].apply(email_extract)
 
 
 # Getting separate files for each columns
